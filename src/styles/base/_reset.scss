@@ -1,0 +1,48 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  color: var(--adc-fg);
+  background: var(--adc-bg-app);
+  font-family: var(--adc-font-mono);
+  font-size: 15px;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  font-family: var(--adc-font-mono);
+  line-height: var(--adc-lh-body);
+}
+
+button,
+textarea,
+input {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+a {
+  color: var(--adc-link);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--adc-accent-2);
+  outline-offset: 2px;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}

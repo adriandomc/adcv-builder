@@ -1,0 +1,224 @@
+.adc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: var(--adc-h-md);
+  height: var(--adc-h-md);
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: var(--adc-radius-sm);
+  background: var(--adc-accent-1);
+  color: var(--adc-white);
+  cursor: pointer;
+  font-family: var(--adc-font-mono);
+  font-size: var(--adc-fs-sm);
+  font-weight: var(--adc-fw-bold);
+  transition: background var(--adc-dur) var(--adc-ease), transform var(--adc-dur-fast) var(--adc-ease);
+
+  &:hover {
+    background: var(--adc-text);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.adc-btn--secondary {
+  background: var(--adc-accent-2);
+  color: var(--adc-text);
+
+  &:hover {
+    background: #5b9a8d;
+    color: var(--adc-white);
+  }
+}
+
+.adc-btn--ghost {
+  border-color: var(--adc-accent-1);
+  background: transparent;
+  color: var(--adc-accent-1);
+
+  &:hover {
+    background: var(--adc-accent-1);
+    color: var(--adc-white);
+  }
+}
+
+.adc-btn--icon {
+  width: var(--adc-h-icon);
+  height: var(--adc-h-icon);
+  padding: 0;
+}
+
+.adc-card {
+  border: var(--adc-border-1);
+  border-radius: var(--adc-radius-md);
+  background: var(--adc-bg-card);
+  padding: var(--adc-space-5);
+}
+
+.adc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 22px;
+  padding: 3px 10px;
+  border: 1px solid var(--adc-bg-pill);
+  border-radius: var(--adc-radius-pill);
+  background: var(--adc-bg-pill);
+  color: var(--adc-text);
+  font-size: 11px;
+  font-weight: var(--adc-fw-bold);
+  line-height: 1;
+  text-decoration: none;
+}
+
+.adc-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 3px 8px;
+  border: 1px solid var(--adc-bg-pill);
+  border-radius: var(--adc-radius-pill);
+  background: var(--adc-bg-pill);
+  color: var(--adc-text);
+  font-size: 11px;
+  font-weight: var(--adc-fw-bold);
+  text-decoration: none;
+}
+
+a.adc-pill,
+a.adc-chip {
+  text-decoration: none;
+}
+
+.adc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.adc-label {
+  color: var(--adc-fg-muted);
+  font-size: 11px;
+  font-weight: var(--adc-fw-bold);
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.adc-textarea,
+.adc-input {
+  width: 100%;
+  border: 1px solid var(--adc-accent-1);
+  border-radius: var(--adc-radius-sm);
+  background: var(--adc-white);
+  color: var(--adc-text);
+  font-family: var(--adc-font-mono);
+  font-size: var(--adc-fs-sm);
+  outline: none;
+
+  &:focus {
+    border-color: var(--adc-accent-2);
+  }
+}
+
+.adc-textarea {
+  min-height: 96px;
+  padding: 10px 12px;
+  resize: vertical;
+}
+
+.adc-input {
+  height: var(--adc-h-md);
+  padding: 0 12px;
+}
+
+.adc-alert {
+  display: flex;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid;
+  border-radius: var(--adc-radius-md);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.adc-alert__icon {
+  display: inline-flex;
+  flex: 0 0 20px;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: var(--adc-white);
+  font-size: 12px;
+  font-weight: var(--adc-fw-extrabold);
+}
+
+.adc-alert__title {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 14px;
+  font-weight: var(--adc-fw-bold);
+}
+
+.adc-alert--error {
+  border-color: var(--adc-error);
+  background: rgba(202, 94, 94, 0.18);
+
+  .adc-alert__icon {
+    background: var(--adc-error);
+  }
+}
+
+.adc-alert--warn {
+  border-color: var(--adc-warning);
+  background: rgba(219, 198, 101, 0.3);
+
+  .adc-alert__icon {
+    background: var(--adc-warning);
+    color: var(--adc-text);
+  }
+}
+
+.adc-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--adc-text);
+  font-size: var(--adc-fs-sm);
+  font-weight: var(--adc-fw-bold);
+}
+
+.adc-status__dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  border-radius: 50%;
+  background: var(--adc-accent-1);
+}
+
+.adc-status--draft .adc-status__dot,
+.adc-status--saving .adc-status__dot {
+  background: var(--adc-warning);
+}
+
+.adc-status--error .adc-status__dot {
+  background: var(--adc-error);
+}
+
+.adc-divider {
+  width: 100%;
+  height: 1px;
+  border: 0;
+  background: var(--adc-accent-1);
+  opacity: 0.3;
+}
