@@ -42,6 +42,7 @@ export interface EducationItem {
 }
 
 export interface Resume {
+  document?: 'resume';
   profile: ResumeProfile;
   summary: string;
   skills: SkillGroup[];
@@ -49,6 +50,24 @@ export interface Resume {
   projects: ProjectItem[];
   education: EducationItem[];
 }
+
+export interface CoverLetterRecipient {
+  company: string;
+  hiringManager?: string;
+  address?: string;
+}
+
+export interface CoverLetter {
+  document: 'cover-letter';
+  profile: ResumeProfile;
+  recipient: CoverLetterRecipient;
+  date?: string;
+  greeting: string;
+  body: string[];
+  closing: string;
+}
+
+export type Document = Resume | CoverLetter;
 
 export const ResumeLinkSchema = Schema.Struct({
   label: Schema.String,
@@ -92,6 +111,7 @@ export const EducationItemSchema = Schema.Struct({
 });
 
 export const ResumeSchema = Schema.Struct({
+  document: Schema.optional(Schema.Literal('resume')),
   profile: ResumeProfileSchema,
   summary: Schema.String,
   skills: Schema.Array(SkillGroupSchema),
@@ -99,3 +119,21 @@ export const ResumeSchema = Schema.Struct({
   projects: Schema.Array(ProjectItemSchema),
   education: Schema.Array(EducationItemSchema)
 });
+
+export const CoverLetterRecipientSchema = Schema.Struct({
+  company: Schema.String,
+  hiringManager: Schema.optional(Schema.String),
+  address: Schema.optional(Schema.String)
+});
+
+export const CoverLetterSchema = Schema.Struct({
+  document: Schema.Literal('cover-letter'),
+  profile: ResumeProfileSchema,
+  recipient: CoverLetterRecipientSchema,
+  date: Schema.optional(Schema.String),
+  greeting: Schema.String,
+  body: Schema.Array(Schema.String),
+  closing: Schema.String
+});
+
+export const DocumentSchema = Schema.Union(CoverLetterSchema, ResumeSchema);

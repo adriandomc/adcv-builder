@@ -1,6 +1,6 @@
 import { Effect, Schema, pipe } from 'effect';
 import { parse, stringify } from 'yaml';
-import { ResumeSchema, type Resume } from './ResumeSchema';
+import { DocumentSchema, type Document } from './ResumeSchema';
 
 export class ResumeParseError extends Error {
   readonly _tag = 'ResumeParseError';
@@ -12,7 +12,7 @@ export class ResumeParseError extends Error {
 
 export interface ParseSuccess {
   ok: true;
-  value: Resume;
+  value: Document;
 }
 
 export interface ParseFailure {
@@ -22,9 +22,9 @@ export interface ParseFailure {
 
 export type ParseResult = ParseSuccess | ParseFailure;
 
-const decodeResume = Schema.decodeUnknown(ResumeSchema);
+const decodeDocument = Schema.decodeUnknown(DocumentSchema);
 
-export function parseYamlToAst(yamlString: string): Effect.Effect<Resume, ResumeParseError> {
+export function parseYamlToAst(yamlString: string): Effect.Effect<Document, ResumeParseError> {
   return pipe(
     Effect.try({
       try: () => parse(yamlString),
@@ -32,15 +32,15 @@ export function parseYamlToAst(yamlString: string): Effect.Effect<Resume, Resume
     }),
     Effect.flatMap((value) =>
       pipe(
-        decodeResume(value),
-        Effect.map((decoded) => decoded as Resume),
-        Effect.mapError((cause) => new ResumeParseError('Resume schema mismatch', cause))
+        decodeDocument(value),
+        Effect.map((decoded) => decoded as Document),
+        Effect.mapError((cause) => new ResumeParseError('Document schema mismatch', cause))
       )
     )
   );
 }
 
-export function parseAstToYaml(resume: Resume): Effect.Effect<string, ResumeParseError> {
+export function parseAstToYaml(resume: Document): Effect.Effect<string, ResumeParseError> {
   return Effect.try({
     try: () =>
       stringify(resume, {
@@ -48,7 +48,7 @@ export function parseAstToYaml(resume: Resume): Effect.Effect<string, ResumePars
         lineWidth: 0,
         defaultStringType: 'QUOTE_DOUBLE'
       }),
-    catch: (cause) => new ResumeParseError('Could not serialize resume YAML', cause)
+    catch: (cause) => new ResumeParseError('Could not serialize document YAML', cause)
   });
 }
 
@@ -70,7 +70,7 @@ export function parseYamlToAstResult(yamlString: string): Promise<ParseResult> {
   );
 }
 
-export function parseAstToYamlResult(resume: Resume): Promise<ParseFailure | { ok: true; value: string }> {
+export function parseAstToYamlResult(resume: Document): Promise<ParseFailure | { ok: true; value: string }> {
   return Effect.runPromise(
     pipe(
       parseAstToYaml(resume),

@@ -1,8 +1,8 @@
-import type { Resume } from '$lib/effect/ResumeSchema';
+import type { Document } from '$lib/effect/ResumeSchema';
 
-export interface ResumeResponse {
+export interface DocumentResponse {
   yaml: string;
-  data: Resume;
+  data: Document;
   updatedAt: string;
   schemaVersion: 1;
 }

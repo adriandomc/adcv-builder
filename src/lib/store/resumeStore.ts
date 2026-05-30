@@ -1,16 +1,33 @@
 import { writable } from 'svelte/store';
 import { parseYamlToAstResult } from '$lib/effect/YamlService';
-import type { Resume } from '$lib/effect/ResumeSchema';
-import type { ResumeResponse } from '$lib/resume/api';
+import type { Document } from '$lib/effect/ResumeSchema';
+import type { DocumentResponse } from '$lib/resume/api';
 import { DEFAULT_RESUME, DEFAULT_RESUME_YAML } from '$lib/resume/defaultResume';
+import { DEFAULT_COVER_LETTER, DEFAULT_COVER_LETTER_YAML } from '$lib/resume/defaultCoverLetter';
 
-const STORAGE_KEY = 'adcv_resume';
+export type DocumentType = 'resume' | 'cover-letter';
+
+const STORAGE_KEYS: Record<DocumentType, string> = {
+  'resume': 'adcv_resume',
+  'cover-letter': 'adcv_cover_letter'
+};
+
+const DEFAULT_YAMLS: Record<DocumentType, string> = {
+  'resume': DEFAULT_RESUME_YAML,
+  'cover-letter': DEFAULT_COVER_LETTER_YAML
+};
+
+const DEFAULT_DOCS: Record<DocumentType, Document> = {
+  'resume': DEFAULT_RESUME,
+  'cover-letter': DEFAULT_COVER_LETTER
+};
 
 export type SaveState = 'loading' | 'idle' | 'dirty' | 'saving' | 'saved' | 'error';
 
 export interface ResumeState {
+  documentType: DocumentType;
   yaml: string;
-  resume: Resume;
+  document: Document;
   parseError: string | null;
   saveError: string | null;
   loadError: string | null;
@@ -19,8 +36,9 @@ export interface ResumeState {
 }
 
 const initialState: ResumeState = {
+  documentType: 'resume',
   yaml: DEFAULT_RESUME_YAML,
-  resume: DEFAULT_RESUME,
+  document: DEFAULT_RESUME,
   parseError: null,
   saveError: null,
   loadError: null,
@@ -34,21 +52,39 @@ let saveTimer: ReturnType<typeof setTimeout> | null = null;
 let parseVersion = 0;
 
 export async function initializeResume(): Promise<void> {
+  await loadDocumentType('resume');
+}
+
+export async function switchDocumentType(type: DocumentType): Promise<void> {
+  let currentType: DocumentType = 'resume';
+  const unsubscribe = resumeStore.subscribe(s => currentType = s.documentType);
+  unsubscribe();
+  
+  if (currentType === type) return;
+
+  clearPendingSave();
+  await loadDocumentType(type);
+}
+
+async function loadDocumentType(type: DocumentType): Promise<void> {
   resumeStore.update((state) => ({
     ...state,
+    documentType: type,
     saveState: 'loading',
     loadError: null
   }));
 
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const key = STORAGE_KEYS[type];
+    const stored = localStorage.getItem(key);
 
     if (stored) {
-      const payload = JSON.parse(stored) as ResumeResponse;
+      const payload = JSON.parse(stored) as DocumentResponse;
       parseVersion += 1;
       resumeStore.set({
+        documentType: type,
         yaml: payload.yaml,
-        resume: payload.data,
+        document: payload.data,
         parseError: null,
         saveError: null,
         loadError: null,
@@ -56,22 +92,25 @@ export async function initializeResume(): Promise<void> {
         updatedAt: payload.updatedAt
       });
     } else {
-      const parsed = await parseYamlToAstResult(DEFAULT_RESUME_YAML);
-      if (!parsed.ok) {
-        throw new Error('Default resume does not match the schema');
-      }
+      const defaultYaml = DEFAULT_YAMLS[type];
+      const defaultDoc = DEFAULT_DOCS[type];
+      const parsed = await parseYamlToAstResult(defaultYaml);
+      
+      const doc = parsed.ok ? parsed.value : defaultDoc;
+
       const now = new Date().toISOString();
-      const payload: ResumeResponse = {
-        yaml: DEFAULT_RESUME_YAML,
-        data: parsed.value,
+      const payload: DocumentResponse = {
+        yaml: defaultYaml,
+        data: doc,
         updatedAt: now,
         schemaVersion: 1
       };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      localStorage.setItem(key, JSON.stringify(payload));
       parseVersion += 1;
       resumeStore.set({
-        yaml: DEFAULT_RESUME_YAML,
-        resume: parsed.value,
+        documentType: type,
+        yaml: defaultYaml,
+        document: doc,
         parseError: null,
         saveError: null,
         loadError: null,
@@ -82,8 +121,9 @@ export async function initializeResume(): Promise<void> {
   } catch (error) {
     resumeStore.update((state) => ({
       ...state,
+      documentType: type,
       saveState: 'error',
-      loadError: error instanceof Error ? error.message : 'Could not load resume',
+      loadError: error instanceof Error ? error.message : 'Could not load document',
       saveError: null
     }));
   }
@@ -119,7 +159,7 @@ export async function updateYaml(nextYaml: string): Promise<void> {
 
   resumeStore.update((state) => ({
     ...state,
-    resume: parsed.value,
+    document: parsed.value,
     parseError: null,
     saveState: 'dirty'
   }));
@@ -167,20 +207,25 @@ async function saveYaml(yaml: string, version: number): Promise<void> {
 
   resumeStore.update((state) => ({
     ...state,
-    resume: parsed.value,
+    document: parsed.value,
     saveState: 'saving',
     saveError: null
   }));
 
   try {
+    let type: DocumentType = 'resume';
+    const unsubscribe = resumeStore.subscribe(s => type = s.documentType);
+    unsubscribe();
+
     const now = new Date().toISOString();
-    const payload: ResumeResponse = {
+    const payload: DocumentResponse = {
       yaml,
       data: parsed.value,
       updatedAt: now,
       schemaVersion: 1
     };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    
+    localStorage.setItem(STORAGE_KEYS[type], JSON.stringify(payload));
 
     if (version !== parseVersion) {
       return;
@@ -188,7 +233,7 @@ async function saveYaml(yaml: string, version: number): Promise<void> {
 
     resumeStore.update((state) => ({
       ...state,
-      resume: parsed.value,
+      document: parsed.value,
       saveState: 'saved',
       saveError: null,
       updatedAt: now
@@ -201,7 +246,7 @@ async function saveYaml(yaml: string, version: number): Promise<void> {
     resumeStore.update((state) => ({
       ...state,
       saveState: 'error',
-      saveError: error instanceof Error ? error.message : 'Could not save resume'
+      saveError: error instanceof Error ? error.message : 'Could not save document'
     }));
   }
 }

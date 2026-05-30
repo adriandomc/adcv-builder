@@ -8,12 +8,12 @@ describe('YamlService', () => {
 
     expect(result.ok).toBe(true);
 
-    if (result.ok) {
-      expect(result.value.profile.name).toBe('Adrián Domínguez Casasola');
+    if (result.ok && result.value.document !== 'cover-letter') {
+      expect(result.value.profile.name).toBe('Jane Doe');
       expect(result.value.profile.website).toEqual([
         {
           label: 'Portfolio',
-          url: 'https://portfolio.adriandomc.com'
+          url: 'https://portfolio.example.com'
         }
       ]);
       expect(result.value.skills[0]?.items).toContain('React');
@@ -22,16 +22,16 @@ describe('YamlService', () => {
 
   it('keeps backwards compatibility with a website string', async () => {
     const legacyYaml = DEFAULT_RESUME_YAML.replace(
-      'website:\n    - label: "Portfolio"\n      url: "https://portfolio.adriandomc.com"',
-      'website: "https://portfolio.adriandomc.com"'
+      'website:\n    - label: "Portfolio"\n      url: "https://portfolio.example.com"',
+      'website: "https://portfolio.example.com"'
     );
 
     const result = await parseYamlToAstResult(legacyYaml);
 
     expect(result.ok).toBe(true);
 
-    if (result.ok) {
-      expect(result.value.profile.website).toBe('https://portfolio.adriandomc.com');
+    if (result.ok && result.value.document !== 'cover-letter') {
+      expect(result.value.profile.website).toBe('https://portfolio.example.com');
     }
   });
 
@@ -45,13 +45,13 @@ describe('YamlService', () => {
     }
   });
 
-  it('rejects documents that do not match the resume schema', async () => {
+  it('rejects documents that do not match the document schema', async () => {
     const result = await parseYamlToAstResult('profile:\n  name: "Only a name"\n');
 
     expect(result.ok).toBe(false);
 
     if (!result.ok) {
-      expect(result.error).toContain('Resume schema mismatch');
+      expect(result.error).toContain('Document schema mismatch');
     }
   });
 });

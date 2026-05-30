@@ -1,10 +1,12 @@
 <script lang="ts">
-  import type { ResumeState } from '$lib/store/resumeStore';
+  import { switchDocumentType, type ResumeState } from '$lib/store/resumeStore';
   import ErrorConsole from './ErrorConsole.svelte';
   import PrintButton from './PrintButton.svelte';
   import ResumePreview from './ResumePreview.svelte';
+  import CoverLetterPreview from './CoverLetterPreview.svelte';
   import SaveStatus from './SaveStatus.svelte';
   import YamlEditor from './YamlEditor.svelte';
+  import { FileText, Mail } from '@lucide/svelte';
 
   type ConsoleItem = {
     source: string;
@@ -50,6 +52,23 @@
       <h1>ADCV Builder</h1>
     </div>
 
+    <div class="adc-tabs document-selector">
+      <button 
+        class="adc-tab {state.documentType === 'resume' ? 'is-active' : ''}" 
+        on:click={() => switchDocumentType('resume')}
+      >
+        <FileText size={16} strokeWidth={2} aria-hidden="true" />
+        <span>Resume</span>
+      </button>
+      <button 
+        class="adc-tab {state.documentType === 'cover-letter' ? 'is-active' : ''}" 
+        on:click={() => switchDocumentType('cover-letter')}
+      >
+        <Mail size={16} strokeWidth={2} aria-hidden="true" />
+        <span>Cover Letter</span>
+      </button>
+    </div>
+
     <div class="app-actions">
       <SaveStatus state={state.saveState} updatedAt={state.updatedAt} />
       <PrintButton disabled={state.saveState === 'loading'} />
@@ -78,14 +97,25 @@
       on:mousedown={startDrag}
     ></div>
 
-    <section class="preview-pane" aria-label="Resume preview">
+    <section class="preview-pane" aria-label="Document preview">
       <div class="pane-header">
         <h2 class="pane-title">Preview</h2>
       </div>
 
-      <ResumePreview resume={state.resume} />
+      {#if state.documentType === 'resume'}
+        <ResumePreview resume={state.document} />
+      {:else}
+        <CoverLetterPreview coverLetter={state.document} />
+      {/if}
     </section>
   </main>
 
   <ErrorConsole items={consoleItems} />
 </div>
+
+<style>
+  .document-selector {
+    margin-right: auto;
+    margin-left: var(--adc-space-6);
+  }
+</style>

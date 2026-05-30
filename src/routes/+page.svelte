@@ -14,7 +14,7 @@
 <svelte:head>
   <title>{documentTitle}</title>
   <meta name="description" content={documentDescription} />
-  <meta name="author" content={$resumeStore.resume.profile.name} />
+  <meta name="author" content={$resumeStore.document.profile.name} />
 </svelte:head>
 
 <Layout state={$resumeStore} onYamlChange={updateYaml} />
