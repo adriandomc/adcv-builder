@@ -7,7 +7,6 @@ Personal YAML-first visual resume builder with SvelteKit, Effect, and SCSS. Data
 ```sh
 npm install -g pnpm
 pnpm install
-cp .env.example .env
 pnpm dev
 ```
 
