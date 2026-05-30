@@ -222,3 +222,71 @@ a.adc-chip {
   background: var(--adc-accent-1);
   opacity: 0.3;
 }
+
+/* ---------- Tabs ---------- */
+.adc-tabs {
+  display: inline-flex;
+  background: var(--adc-accent-1);
+  border-radius: var(--adc-radius-sm);
+  height: 40px;
+}
+
+.adc-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* For icons */
+  padding: 0 18px;
+  color: var(--adc-white);
+  font-family: var(--adc-font-mono);
+  font-weight: var(--adc-fw-bold);
+  font-size: 13px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: color 180ms var(--adc-ease);
+  border: none;
+  background: transparent;
+
+  &:last-child {
+    border-right: 0;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 0;
+    background: var(--adc-accent-2);
+    transition: height 220ms var(--adc-ease);
+  }
+
+  &::before {
+    top: 0;
+  }
+
+  &::after {
+    bottom: 0;
+  }
+
+  &.is-active::before,
+  &.is-active::after {
+    height: 3px;
+  }
+
+  &:hover {
+    color: var(--adc-text);
+  }
+
+  &:hover::before,
+  &:hover::after {
+    height: 50%;
+  }
+}
