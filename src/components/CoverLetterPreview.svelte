@@ -70,7 +70,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--adc-space-5);
-    font-size: var(--adc-font-size-sm);
+    font-size: var(--adc-fs-sm);
     line-height: 1.6;
     color: var(--adc-text);
   }
@@ -113,5 +113,44 @@
   .cl-signature {
     margin-top: var(--adc-space-4);
     font-weight: 600;
+  }
+
+  @media print {
+    .cover-letter-content {
+      padding: 0.1in 0;
+      gap: 0.1in;
+      font-size: 9.5pt;
+      line-height: 1.42;
+    }
+
+    .cl-date,
+    .cl-recipient {
+      margin-bottom: 0.06in;
+    }
+
+    /* Keep the recipient block and the whole sign-off (closing + name)
+       from splitting across pages — prevents an orphaned signature. */
+    .cl-recipient,
+    .cl-closing {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .cl-greeting {
+      margin-top: 0.03in;
+    }
+
+    .cl-body {
+      gap: 0.085in;
+    }
+
+    .cl-body p {
+      orphans: 2;
+      widows: 2;
+    }
+
+    .cl-closing {
+      margin-top: 0.14in;
+    }
   }
 </style>
