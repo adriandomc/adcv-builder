@@ -7,8 +7,15 @@
     void initializeResume();
   });
 
-  $: documentTitle = "ADCV Builder";
-  $: documentDescription = "Custom resume builder for ADC";
+  $: activeDocument = $resumeStore.document;
+  $: documentKind = activeDocument.document === 'cover-letter' ? 'Cover Letter' : 'Resume';
+  $: personName = activeDocument.profile?.name?.trim();
+  // Drives the browser tab AND the exported PDF's /Title metadata (what a
+  // screen reader announces and what an ATS reads as the document title).
+  $: documentTitle = personName ? `${personName} — ${documentKind}` : 'ADCV Builder';
+  $: documentDescription = personName
+    ? `${documentKind} of ${personName}`
+    : 'Custom resume builder for ADC';
 </script>
 
 <svelte:head>
