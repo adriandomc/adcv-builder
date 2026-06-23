@@ -26,6 +26,7 @@
   let workspaceEl: HTMLElement;
   let editorPct = 43;
   let dragging = false;
+  let mobileView: 'editor' | 'preview' = 'preview';
 
   function startDrag(e: MouseEvent) {
     dragging = true;
@@ -75,13 +76,36 @@
     </div>
   </header>
 
+  <div class="adc-tabs mobile-view-switch" role="tablist" aria-label="Editor or preview">
+    <button
+      class="adc-tab {mobileView === 'editor' ? 'is-active' : ''}"
+      role="tab"
+      aria-selected={mobileView === 'editor'}
+      on:click={() => (mobileView = 'editor')}
+    >
+      <span>Editor</span>
+    </button>
+    <button
+      class="adc-tab {mobileView === 'preview' ? 'is-active' : ''}"
+      role="tab"
+      aria-selected={mobileView === 'preview'}
+      on:click={() => (mobileView = 'preview')}
+    >
+      <span>Preview</span>
+    </button>
+  </div>
+
   <main
     class="workspace"
     class:workspace--dragging={dragging}
     bind:this={workspaceEl}
-    style="grid-template-columns: {editorPct}% 6px 1fr;"
+    style="--editor-pct: {editorPct}%;"
   >
-    <section class="editor-pane" aria-label="YAML editor">
+    <section
+      class="editor-pane"
+      class:is-hidden-mobile={mobileView !== 'editor'}
+      aria-label="YAML editor"
+    >
       <div class="pane-header">
         <h2 class="pane-title">YAML</h2>
       </div>
@@ -97,7 +121,11 @@
       on:mousedown={startDrag}
     ></div>
 
-    <section class="preview-pane" aria-label="Document preview">
+    <section
+      class="preview-pane"
+      class:is-hidden-mobile={mobileView !== 'preview'}
+      aria-label="Document preview"
+    >
       <div class="pane-header">
         <h2 class="pane-title">Preview</h2>
       </div>
@@ -112,10 +140,3 @@
 
   <ErrorConsole items={consoleItems} />
 </div>
-
-<style>
-  .document-selector {
-    margin-right: auto;
-    margin-left: var(--adc-space-6);
-  }
-</style>
