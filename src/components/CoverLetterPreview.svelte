@@ -8,12 +8,16 @@
   const PAGE_W = 816;
   const PAGE_H = 1056;
   const FRAME_PAD = 32; // matches --adc-space-7 (24px) × 2 sides + breathing room
+  const FRAME_PAD_MOBILE = 12; // matches .resume-frame padding below 700px
 
   let frameWidth = 0;
   let docHeight = PAGE_H;
 
+  // Below 700px the frame padding shrinks (see _resume.scss) so the scaled
+  // miniature can use more of the narrow viewport width.
+  $: pad = frameWidth > 0 && frameWidth < 700 ? FRAME_PAD_MOBILE : FRAME_PAD;
   $: scale = frameWidth > 0
-    ? Math.min(1, (frameWidth - FRAME_PAD * 2) / PAGE_W)
+    ? Math.min(1, (frameWidth - pad * 2) / PAGE_W)
     : 1;
   $: viewportW = Math.round(PAGE_W * scale);
   $: viewportH = Math.round(docHeight * scale);

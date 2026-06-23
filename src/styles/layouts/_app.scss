@@ -49,10 +49,17 @@
   white-space: nowrap;
 }
 
+.document-selector {
+  margin-right: auto;
+  margin-left: var(--adc-space-6);
+}
+
+/* The editor/preview split width is driven by the --editor-pct custom property
+   (set inline from the drag handler) so the mobile media query can override the
+   columns — an inline grid-template-columns would otherwise win over it. */
 .workspace {
   display: grid;
-  /* columns are set via inline style; fallback keeps a sensible default */
-  grid-template-columns: 43% 6px 1fr;
+  grid-template-columns: var(--editor-pct, 43%) 6px 1fr;
   min-height: 0;
   overflow: hidden;
 
@@ -60,6 +67,11 @@
     cursor: col-resize;
     user-select: none;
   }
+}
+
+/* Segmented control to switch Editor/Preview on small screens; desktop-hidden. */
+.mobile-view-switch {
+  display: none;
 }
 
 .workspace-divider {
@@ -265,9 +277,30 @@
 }
 
 @media (max-width: 980px) {
+  .app-shell {
+    /* header · view-switch · workspace · error-console */
+    height: 100vh;
+    min-height: 0;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+  }
+
   .app-header {
-    align-items: flex-start;
+    align-items: stretch;
     flex-direction: column;
+    gap: var(--adc-space-3);
+    min-height: 0;
+    padding: var(--adc-space-3) var(--adc-space-4);
+  }
+
+  .document-selector {
+    margin: 0;
+    width: 100%;
+  }
+
+  .document-selector .adc-tab {
+    flex: 1;
+    justify-content: center;
+    min-height: 44px;
   }
 
   .app-actions {
@@ -275,26 +308,64 @@
     justify-content: space-between;
   }
 
+  .app-actions .adc-btn {
+    min-height: 44px;
+  }
+
+  .mobile-view-switch {
+    display: flex;
+    height: auto;
+    border-radius: 0;
+    border-bottom: var(--adc-border-1);
+
+    .adc-tab {
+      flex: 1;
+      justify-content: center;
+      min-height: 44px;
+    }
+  }
+
   .workspace {
     grid-template-columns: 1fr;
+    overflow: hidden;
   }
 
-  .editor-pane {
-    min-height: 56vh;
-    border-right: 0;
-    border-bottom: var(--adc-border-1);
-  }
-
+  /* Only the active view is shown; it gets the full remaining height. */
+  .editor-pane,
   .preview-pane {
-    min-height: 70vh;
+    min-height: 0;
+    border-right: 0;
   }
 
-  .app-shell {
-    height: auto;
-    min-height: 100vh;
+  .editor-pane.is-hidden-mobile,
+  .preview-pane.is-hidden-mobile {
+    display: none;
   }
 
-  .workspace {
-    overflow: visible;
+  .workspace-divider {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-title h1 {
+    font-size: var(--adc-fs-lg);
+  }
+
+  .app-header {
+    padding: var(--adc-space-2) var(--adc-space-3);
+  }
+
+  .pane-header {
+    min-height: 40px;
+    padding: var(--adc-space-2) var(--adc-space-4);
+  }
+
+  .adc-tab span {
+    font-size: var(--adc-fs-xs);
+  }
+
+  .app-error-console__panel {
+    max-height: 40vh;
   }
 }

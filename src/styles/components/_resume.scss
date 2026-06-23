@@ -164,23 +164,13 @@
   background: var(--adc-bg-pill);
 }
 
-@media (max-width: 640px) {
+/* On small screens the preview stays a faithful, scaled-down A4 page (handled by
+   transform: scale in the preview components) rather than reflowing its content,
+   so the on-screen preview always matches the printed PDF. Only the outer frame
+   padding shrinks to give the miniature more width. */
+@media (max-width: 700px) {
   .resume-frame {
-    padding: var(--adc-space-5);
-  }
-
-  .resume-document {
-    min-height: auto;
-    padding: var(--adc-space-6);
-  }
-
-  .resume-item__head,
-  .skill-group {
-    grid-template-columns: 1fr;
-  }
-
-  .resume-item__meta {
-    text-align: left;
+    padding: var(--adc-space-4);
   }
 }
 
@@ -206,8 +196,16 @@
   .app-error-console,
   .editor-pane,
   .pane-header,
-  .workspace-divider {
+  .workspace-divider,
+  .mobile-view-switch {
     display: none !important;
+  }
+
+  /* The preview can be hidden by the mobile Editor/Preview toggle; always show
+     it when printing so the PDF never comes out blank. */
+  .preview-pane,
+  .preview-pane.is-hidden-mobile {
+    display: block !important;
   }
 
   .app-shell {
