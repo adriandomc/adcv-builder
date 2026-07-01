@@ -40,6 +40,9 @@ export const POST: RequestHandler = async ({ request }) => {
   // browser singleton (con relaunch en crash + handlers de shutdown).
   const browser = await puppeteer.launch({
     headless: true,
+    // In a container point this at the system Chromium (see Dockerfile); unset
+    // locally so Puppeteer uses its own downloaded Chrome.
+    executablePath: env.PUPPETEER_EXECUTABLE_PATH || undefined,
     args: ['--no-sandbox', '--disable-dev-shm-usage']
   });
 
