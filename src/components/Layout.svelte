@@ -130,10 +130,10 @@
         <h2 class="pane-title">Preview</h2>
       </div>
 
-      {#if state.documentType === 'resume'}
-        <ResumePreview resume={state.document} />
-      {:else}
+      {#if state.document.document === 'cover-letter'}
         <CoverLetterPreview coverLetter={state.document} />
+      {:else}
+        <ResumePreview resume={state.document} />
       {/if}
     </section>
   </main>
