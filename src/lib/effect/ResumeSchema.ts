@@ -67,7 +67,13 @@ export interface CoverLetter {
   closing: string;
 }
 
-export type Document = Resume | CoverLetter;
+export interface ShortResume {
+  document: 'short-resume';
+  profile: ResumeProfile;
+  body: string;
+}
+
+export type Document = Resume | CoverLetter | ShortResume;
 
 export const ResumeLinkSchema = Schema.Struct({
   label: Schema.String,
@@ -136,4 +142,10 @@ export const CoverLetterSchema = Schema.Struct({
   closing: Schema.String
 });
 
-export const DocumentSchema = Schema.Union(CoverLetterSchema, ResumeSchema);
+export const ShortResumeSchema = Schema.Struct({
+  document: Schema.Literal('short-resume'),
+  profile: ResumeProfileSchema,
+  body: Schema.String
+});
+
+export const DocumentSchema = Schema.Union(CoverLetterSchema, ShortResumeSchema, ResumeSchema);

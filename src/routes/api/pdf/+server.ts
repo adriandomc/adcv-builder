@@ -15,7 +15,9 @@ function renderOrigin(): string {
 }
 
 function fileName(doc: Document): string {
-  const kind = doc.document === 'cover-letter' ? 'Cover Letter' : 'Resume';
+  const kind = doc.document === 'cover-letter'
+    ? 'Cover Letter'
+    : doc.document === 'short-resume' ? 'Short Resume' : 'Resume';
   const name = doc.profile?.name?.trim();
   const base = name ? `${name} - ${kind}` : `ADCV ${kind}`;
   // Keep it ASCII-safe for the Content-Disposition header.

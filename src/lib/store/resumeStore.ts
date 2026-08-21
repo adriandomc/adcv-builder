@@ -4,21 +4,25 @@ import type { Document } from '$lib/effect/ResumeSchema';
 import type { DocumentResponse } from '$lib/resume/api';
 import { DEFAULT_RESUME, DEFAULT_RESUME_YAML } from '$lib/resume/defaultResume';
 import { DEFAULT_COVER_LETTER, DEFAULT_COVER_LETTER_YAML } from '$lib/resume/defaultCoverLetter';
+import { DEFAULT_SHORT_RESUME, DEFAULT_SHORT_RESUME_YAML } from '$lib/resume/defaultShortResume';
 
-export type DocumentType = 'resume' | 'cover-letter';
+export type DocumentType = 'resume' | 'short-resume' | 'cover-letter';
 
 const STORAGE_KEYS: Record<DocumentType, string> = {
   'resume': 'adcv_resume',
+  'short-resume': 'adcv_short_resume',
   'cover-letter': 'adcv_cover_letter'
 };
 
 const DEFAULT_YAMLS: Record<DocumentType, string> = {
   'resume': DEFAULT_RESUME_YAML,
+  'short-resume': DEFAULT_SHORT_RESUME_YAML,
   'cover-letter': DEFAULT_COVER_LETTER_YAML
 };
 
 const DEFAULT_DOCS: Record<DocumentType, Document> = {
   'resume': DEFAULT_RESUME,
+  'short-resume': DEFAULT_SHORT_RESUME,
   'cover-letter': DEFAULT_COVER_LETTER
 };
 
@@ -250,5 +254,4 @@ async function saveYaml(yaml: string, version: number): Promise<void> {
     }));
   }
 }
-
 

@@ -8,7 +8,9 @@
   });
 
   $: activeDocument = $resumeStore.document;
-  $: documentKind = activeDocument.document === 'cover-letter' ? 'Cover Letter' : 'Resume';
+  $: documentKind = activeDocument.document === 'cover-letter'
+    ? 'Cover Letter'
+    : activeDocument.document === 'short-resume' ? 'Short Resume' : 'Resume';
   $: personName = activeDocument.profile?.name?.trim();
   // Drives the browser tab AND the exported PDF's /Title metadata (what a
   // screen reader announces and what an ATS reads as the document title).

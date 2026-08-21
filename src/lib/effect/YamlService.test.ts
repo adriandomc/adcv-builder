@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { DEFAULT_RESUME_YAML } from '$lib/resume/defaultResume';
+import { DEFAULT_SHORT_RESUME_YAML } from '$lib/resume/defaultShortResume';
 import { parseYamlToAstResult } from './YamlService';
 
 describe('YamlService', () => {
@@ -8,7 +9,11 @@ describe('YamlService', () => {
 
     expect(result.ok).toBe(true);
 
-    if (result.ok && result.value.document !== 'cover-letter') {
+    if (
+      result.ok &&
+      result.value.document !== 'cover-letter' &&
+      result.value.document !== 'short-resume'
+    ) {
       expect(result.value.profile.name).toBe('Jane Doe');
       expect(result.value.profile.website).toEqual([
         {
@@ -30,8 +35,23 @@ describe('YamlService', () => {
 
     expect(result.ok).toBe(true);
 
-    if (result.ok && result.value.document !== 'cover-letter') {
+    if (
+      result.ok &&
+      result.value.document !== 'cover-letter' &&
+      result.value.document !== 'short-resume'
+    ) {
       expect(result.value.profile.website).toBe('https://portfolio.example.com');
+    }
+  });
+
+  it('parses a short resume with free text', async () => {
+    const result = await parseYamlToAstResult(DEFAULT_SHORT_RESUME_YAML);
+
+    expect(result.ok).toBe(true);
+
+    if (result.ok && result.value.document === 'short-resume') {
+      expect(result.value.profile.links.some((link) => link.label === 'LinkedIn')).toBe(true);
+      expect(result.value.body).toContain('I build useful software');
     }
   });
 

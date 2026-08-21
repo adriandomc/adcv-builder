@@ -4,6 +4,7 @@
   import PrintButton from './PrintButton.svelte';
   import ResumePreview from './ResumePreview.svelte';
   import CoverLetterPreview from './CoverLetterPreview.svelte';
+  import ShortResumePreview from './ShortResumePreview.svelte';
   import SaveStatus from './SaveStatus.svelte';
   import YamlEditor from './YamlEditor.svelte';
   import { FileText, Mail } from '@lucide/svelte';
@@ -61,7 +62,14 @@
         <FileText size={16} strokeWidth={2} aria-hidden="true" />
         <span>Resume</span>
       </button>
-      <button 
+      <button
+        class="adc-tab {state.documentType === 'short-resume' ? 'is-active' : ''}"
+        on:click={() => switchDocumentType('short-resume')}
+      >
+        <FileText size={16} strokeWidth={2} aria-hidden="true" />
+        <span>Short CV</span>
+      </button>
+      <button
         class="adc-tab {state.documentType === 'cover-letter' ? 'is-active' : ''}" 
         on:click={() => switchDocumentType('cover-letter')}
       >
@@ -132,6 +140,8 @@
 
       {#if state.document.document === 'cover-letter'}
         <CoverLetterPreview coverLetter={state.document} />
+      {:else if state.document.document === 'short-resume'}
+        <ShortResumePreview shortResume={state.document} />
       {:else}
         <ResumePreview resume={state.document} />
       {/if}
