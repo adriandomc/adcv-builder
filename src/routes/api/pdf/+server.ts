@@ -5,6 +5,7 @@ import puppeteer from 'puppeteer';
 import { parseYamlToAstResult } from '$lib/effect/YamlService';
 import { putDoc } from '$lib/server/pdfDocStore';
 import type { Document } from '$lib/effect/ResumeSchema';
+import { documentPageSize } from '$lib/resume/page';
 
 // Origin the headless browser navigates to. Always loopback — never the public
 // (possibly proxied/TLS) origin, which the in-process Chromium can't reach.
@@ -37,6 +38,7 @@ export const POST: RequestHandler = async ({ request }) => {
   }
 
   const token = putDoc(parsed.value);
+  const pageSize = documentPageSize(parsed.value);
 
   // ponytail: launch por request; si el export se vuelve frecuente, cachear un
   // browser singleton (con relaunch en crash + handlers de shutdown).
@@ -59,7 +61,8 @@ export const POST: RequestHandler = async ({ request }) => {
       tagged: true, // accessible/tagged PDF — the whole point (default true; explicit for clarity)
       outline: true, // document bookmarks
       printBackground: true,
-      preferCSSPageSize: true // honor @page { size: letter } from _resume.scss
+      width: `${pageSize.widthIn}in`,
+      height: `${pageSize.heightIn}in`
     });
 
     return new Response(new Uint8Array(pdf), {

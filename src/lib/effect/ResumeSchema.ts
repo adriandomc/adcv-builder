@@ -44,7 +44,12 @@ export interface EducationItem {
 
 export interface ResumeSettings {
   fontSize?: number;
+  page?: ResumePage;
 }
+
+export type ResumePage =
+  | { format: 'letter' | 'a4' | 'legal' }
+  | { width: number; height: number; unit: 'in' | 'mm' };
 
 export interface Resume {
   document?: 'resume';
@@ -124,7 +129,20 @@ export const EducationItemSchema = Schema.Struct({
 });
 
 export const ResumeSettingsSchema = Schema.Struct({
-  fontSize: Schema.optional(Schema.Number.pipe(Schema.between(7, 12)))
+  fontSize: Schema.optional(Schema.Number.pipe(Schema.between(7, 12))),
+  page: Schema.optional(Schema.Union(
+    Schema.Struct({ format: Schema.Literal('letter', 'a4', 'legal') }),
+    Schema.Struct({
+      width: Schema.Number.pipe(Schema.between(5, 20)),
+      height: Schema.Number.pipe(Schema.between(5, 20)),
+      unit: Schema.Literal('in')
+    }),
+    Schema.Struct({
+      width: Schema.Number.pipe(Schema.between(127, 508)),
+      height: Schema.Number.pipe(Schema.between(127, 508)),
+      unit: Schema.Literal('mm')
+    })
+  ))
 });
 
 export const ResumeSchema = Schema.Struct({

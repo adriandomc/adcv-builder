@@ -19,6 +19,9 @@ export const DEFAULT_RESUME_YAML = `profile:
 settings:
   # Font size in points (7-12). Lower values fit more content on one page.
   fontSize: 9.5
+  # Presets: letter, a4, legal. Custom: { width: 9.5, height: 11, unit: "in" }.
+  page:
+    format: "letter"
 summary: "Experienced software engineer specializing in building scalable web applications. Passionate about clean code, modern frontend frameworks, and robust backend architectures."
 skills:
   - name: "Core"

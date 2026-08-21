@@ -23,6 +23,7 @@ describe('YamlService', () => {
       ]);
       expect(result.value.skills[0]?.items).toContain('React');
       expect(result.value.settings?.fontSize).toBe(9.5);
+      expect(result.value.settings?.page).toEqual({ format: 'letter' });
       expect(result.value.experience[1]?.description).toContain('Delivered client projects');
       expect(result.value.experience[1]?.bullets).toBeUndefined();
     }

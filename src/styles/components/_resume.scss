@@ -272,7 +272,7 @@
   .resume-document {
     width: 100%;
     height: auto;
-    min-height: 11in;
+    min-height: var(--resume-page-height);
     overflow: visible;
     border: 0;
     border-radius: 0;
@@ -321,7 +321,6 @@
   }
 
   @page {
-    size: 9.5in 11in;
     margin: 0;
   }
 }

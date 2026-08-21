@@ -7,11 +7,19 @@
   import ResumeSection from './ResumeElements/ResumeSection.svelte';
   import SkillsGroup from './ResumeElements/SkillsGroup.svelte';
   import PagePreview from './PagePreview.svelte';
+  import { resolvePageSize } from '$lib/resume/page';
 
   export let resume: Resume;
+
+  $: page = resolvePageSize(resume.settings?.page);
 </script>
 
-<PagePreview label={`${resume.profile.name} resume`} fontSize={resume.settings?.fontSize ?? 9.5}>
+<PagePreview
+  label={`${resume.profile.name} resume`}
+  fontSize={resume.settings?.fontSize ?? 9.5}
+  pageWidth={page.widthPx}
+  pageHeight={page.heightPx}
+>
   <Header profile={resume.profile} />
 
   <ResumeSection title="Summary">
