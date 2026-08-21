@@ -9,19 +9,21 @@
 }
 
 .resume-document {
-  width: 816px; /* 8.5in at 96 dpi — never changes with browser zoom */
-  min-height: 1056px; /* 11in at 96 dpi */
+  width: var(--resume-page-width);
+  height: var(--resume-page-height);
+  overflow: hidden;
   border: var(--adc-border-1);
   border-radius: var(--adc-radius-md);
   background: var(--adc-white);
   color: var(--adc-text);
-  padding: 0.55in;
+  padding: 0.2in 0.3in;
+  font-size: 9.5pt;
 }
 
 .resume-header {
   display: grid;
-  gap: var(--adc-space-4);
-  padding-bottom: var(--adc-space-5);
+  gap: 0.07in;
+  padding-bottom: 0.1in;
   border-bottom: var(--adc-border-2);
 }
 
@@ -31,7 +33,7 @@
 }
 
 .resume-name {
-  font-size: var(--adc-fs-3xl);
+  font-size: 21pt;
   font-weight: var(--adc-fw-extrabold);
   line-height: var(--adc-lh-tight);
   text-transform: uppercase;
@@ -39,20 +41,20 @@
 
 .resume-title {
   color: var(--adc-accent-1);
-  font-size: var(--adc-fs-lg);
+  font-size: 10pt;
   font-weight: var(--adc-fw-bold);
 }
 
 .resume-contact {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--adc-space-2);
+  gap: 0.04in;
 }
 
 .resume-section {
   display: grid;
-  gap: var(--adc-space-4);
-  padding-top: var(--adc-space-6);
+  gap: 0.05in;
+  padding-top: 0.08in;
 }
 
 .resume-section__title {
@@ -60,7 +62,7 @@
   align-items: center;
   gap: var(--adc-space-3);
   color: var(--adc-accent-1);
-  font-size: var(--adc-fs-sm);
+  font-size: 7.8pt;
   font-weight: var(--adc-fw-bold);
   text-transform: uppercase;
 
@@ -75,67 +77,66 @@
 
 .resume-list {
   display: grid;
-  gap: var(--adc-space-5);
+  gap: 0.075in;
 }
 
 .resume-item {
   display: grid;
-  gap: var(--adc-space-2);
+  gap: 0.025in;
 }
 
 .resume-item__head {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--adc-space-4);
+  gap: 0.08in;
   align-items: start;
 }
 
 .resume-item__title {
-  font-size: var(--adc-fs-md);
+  font-size: 9pt;
   font-weight: var(--adc-fw-bold);
 }
 
 .resume-item__meta {
   color: var(--adc-fg-muted-strong);
-  font-size: var(--adc-fs-xs);
+  font-size: 7.5pt;
   font-weight: var(--adc-fw-bold);
   text-align: right;
 }
 
 .resume-item__sub {
   color: var(--adc-fg-muted-strong);
-  font-size: var(--adc-fs-sm);
+  font-size: 7.5pt;
 }
 
 .project-stack {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--adc-space-2);
-  margin-top: var(--adc-space-2);
+  gap: 0.035in;
+  margin-top: 0.025in;
 }
 
 .project-stack .adc-pill {
-  min-height: 20px;
-  padding: 2px 8px;
-  font-size: 10px;
+  min-height: 0;
 }
 
 .resume-bullets {
   display: grid;
-  gap: var(--adc-space-1);
+  gap: 0.01in;
   margin: 0;
-  padding-left: 1.1rem;
-  font-size: var(--adc-fs-sm);
+  padding-left: 0.15in;
+  font-size: 7.8pt;
+  line-height: 1.35;
 }
 
 .resume-summary {
-  font-size: var(--adc-fs-sm);
-  line-height: var(--adc-lh-body);
+  font-size: 8pt;
+  line-height: 1.38;
 }
 
 .skills-grid {
   display: grid;
-  gap: var(--adc-space-3);
+  gap: 0;
 }
 
 .skill-group {
@@ -145,26 +146,41 @@
 }
 
 .skill-group--flat {
-  grid-template-columns: 1fr;
-  gap: var(--adc-space-2);
+  display: block;
 }
 
 .skill-group__name {
-  font-size: var(--adc-fs-sm);
+  font-size: 8.3125pt;
   font-weight: var(--adc-fw-bold);
 }
 
 .skill-group__items {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--adc-space-2);
+  gap: 0.035in;
 }
 
 .skill-pill {
   background: var(--adc-bg-pill);
 }
 
-/* On small screens the preview stays a faithful, scaled-down A4 page (handled by
+.resume-document .adc-pill,
+.resume-document .adc-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 0;
+  padding: 0.025in 0.06in;
+  border: 1px solid var(--adc-bg-pill);
+  border-radius: var(--adc-radius-pill);
+  background-color: var(--adc-bg-pill);
+  color: var(--adc-text);
+  font-size: 7.2pt;
+  font-weight: var(--adc-fw-bold);
+  line-height: 1.1;
+  text-decoration: none;
+}
+
+/* On small screens the preview stays a faithful, scaled-down 9.5in × 11in page (handled by
    transform: scale in the preview components) rather than reflowing its content,
    so the on-screen preview always matches the printed PDF. Only the outer frame
    padding shrinks to give the miniature more width. */
@@ -248,12 +264,14 @@
 
   .resume-document {
     width: 100%;
+    height: auto;
     min-height: 11in;
+    overflow: visible;
     border: 0;
     border-radius: 0;
     background: var(--adc-white);
     color: var(--adc-text);
-    padding: 0.45in;
+    padding: 0.2in 0.3in;
     transform: none !important;
   }
 
@@ -264,103 +282,22 @@
     page-break-inside: avoid;
   }
 
-  .resume-header {
-    gap: 0.07in;
-    padding-bottom: 0.1in;
-  }
-
-  .resume-name {
-    font-size: 21pt;
-  }
-
-  .resume-title {
-    font-size: 10pt;
-  }
-
-  .resume-contact {
-    gap: 0.04in;
-  }
-
-  .resume-section {
-    gap: 0.07in;
-    padding-top: 0.1in;
-  }
-
   .resume-section__title {
     break-after: avoid;
     page-break-after: avoid;
-    font-size: 7.8pt;
-  }
-
-  .resume-list {
-    gap: 0.075in;
-  }
-
-  .resume-item {
-    gap: 0.025in;
-  }
-
-  .resume-item__head {
-    gap: 0.08in;
-  }
-
-  .resume-item__title {
-    font-size: 9pt;
-  }
-
-  .resume-item__meta,
-  .resume-item__sub {
-    font-size: 7.5pt;
   }
 
   .resume-bullets {
-    gap: 0.01in;
-    padding-left: 0.15in;
-    font-size: 7.8pt;
-    line-height: 1.35;
     orphans: 2;
     widows: 2;
-  }
-
-  .resume-summary {
-    font-size: 8pt;
-    line-height: 1.38;
-  }
-
-  .skills-grid {
-    gap: 0;
-  }
-
-  .skill-group--flat {
-    display: block;
-  }
-
-  .skill-group__items,
-  .project-stack {
-    gap: 0.035in;
-  }
-
-  .project-stack {
-    margin-top: 0.025in;
   }
 
   .adc-pill,
   .adc-chip,
   .skill-pill,
   .project-stack .adc-pill {
-    display: inline-flex;
-    align-items: center;
-    min-height: 0;
-    padding: 0.025in 0.06in;
-    border: 1px solid var(--adc-bg-pill);
-    border-radius: var(--adc-radius-pill);
-    background-color: var(--adc-bg-pill) !important;
     box-decoration-break: clone;
-    color: var(--adc-text) !important;
-    font-size: 7.2pt;
-    font-weight: var(--adc-fw-bold);
-    line-height: 1.1;
-    text-decoration: none !important;
+    background-color: var(--adc-bg-pill) !important;
   }
 
   a {
@@ -377,7 +314,7 @@
   }
 
   @page {
-    size: letter;
+    size: 9.5in 11in;
     margin: 0;
   }
 }
