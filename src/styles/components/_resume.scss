@@ -17,7 +17,6 @@
   background: var(--adc-white);
   color: var(--adc-text);
   padding: 0.2in 0.3in;
-  font-size: 9.5pt;
 }
 
 .resume-header {
@@ -33,7 +32,7 @@
 }
 
 .resume-name {
-  font-size: 21pt;
+  font-size: 2.21em;
   font-weight: var(--adc-fw-extrabold);
   line-height: var(--adc-lh-tight);
   text-transform: uppercase;
@@ -41,7 +40,7 @@
 
 .resume-title {
   color: var(--adc-accent-1);
-  font-size: 10pt;
+  font-size: 1.05em;
   font-weight: var(--adc-fw-bold);
 }
 
@@ -62,7 +61,7 @@
   align-items: center;
   gap: var(--adc-space-3);
   color: var(--adc-accent-1);
-  font-size: 7.8pt;
+  font-size: 0.82em;
   font-weight: var(--adc-fw-bold);
   text-transform: uppercase;
 
@@ -93,27 +92,33 @@
 }
 
 .resume-item__title {
-  font-size: 9pt;
+  font-size: 0.95em;
   font-weight: var(--adc-fw-bold);
 }
 
 .resume-item__meta {
   color: var(--adc-fg-muted-strong);
-  font-size: 7.5pt;
+  font-size: 0.79em;
   font-weight: var(--adc-fw-bold);
   text-align: right;
 }
 
 .resume-item__sub {
   color: var(--adc-fg-muted-strong);
-  font-size: 7.5pt;
+  font-size: 0.79em;
+}
+
+.project-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.04in 0.07in;
 }
 
 .project-stack {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.035in;
-  margin-top: 0.025in;
+  gap: 0.04in;
 }
 
 .project-stack .adc-pill {
@@ -125,24 +130,26 @@
   gap: 0.01in;
   margin: 0;
   padding-left: 0.15in;
-  font-size: 7.8pt;
+  font-size: 0.82em;
   line-height: 1.35;
 }
 
-.resume-summary {
-  font-size: 8pt;
+.resume-summary,
+.resume-description {
+  font-size: 0.84em;
   line-height: 1.38;
 }
 
 .skills-grid {
   display: grid;
-  gap: 0;
+  gap: 0.045in;
 }
 
 .skill-group {
   display: grid;
-  grid-template-columns: minmax(120px, 0.28fr) minmax(0, 1fr);
-  gap: var(--adc-space-4);
+  grid-template-columns: 0.8in minmax(0, 1fr);
+  gap: 0.08in;
+  align-items: start;
 }
 
 .skill-group--flat {
@@ -150,14 +157,14 @@
 }
 
 .skill-group__name {
-  font-size: 8.3125pt;
+  font-size: 0.875em;
   font-weight: var(--adc-fw-bold);
 }
 
 .skill-group__items {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.035in;
+  gap: 0.045in;
 }
 
 .skill-pill {
@@ -174,7 +181,7 @@
   border-radius: var(--adc-radius-pill);
   background-color: var(--adc-bg-pill);
   color: var(--adc-text);
-  font-size: 7.2pt;
+  font-size: 0.76em;
   font-weight: var(--adc-fw-bold);
   line-height: 1.1;
   text-decoration: none;

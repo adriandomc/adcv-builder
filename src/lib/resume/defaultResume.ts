@@ -16,6 +16,9 @@ export const DEFAULT_RESUME_YAML = `profile:
       url: "https://github.com/janedoe"
     - label: "LinkedIn"
       url: "https://linkedin.com/in/janedoe"
+settings:
+  # Font size in points (7-12). Lower values fit more content on one page.
+  fontSize: 9.5
 summary: "Experienced software engineer specializing in building scalable web applications. Passionate about clean code, modern frontend frameworks, and robust backend architectures."
 skills:
   - name: "Core"
@@ -40,9 +43,7 @@ experience:
     role: "Full Stack Developer"
     period: "2019 - 2022"
     location: "New York"
-    bullets:
-      - "Delivered multiple client projects on time using React and Node.js."
-      - "Integrated third-party APIs and payment gateways."
+    description: "Delivered client projects using React and Node.js, including third-party API and payment integrations."
 projects:
   - name: "Open Source Tool"
     description: "A CLI tool for automating deployment workflows."
@@ -50,7 +51,6 @@ projects:
     stack:
       - "Node.js"
       - "CLI"
-    bullets: []
   - name: "E-commerce Platform"
     description: "A scalable e-commerce backend built with microservices."
     url: "https://github.com/janedoe/ecommerce"
@@ -58,7 +58,6 @@ projects:
       - "Python"
       - "PostgreSQL"
       - "Docker"
-    bullets: []
 education:
   - school: "State University"
     degree: "Bachelor of Science in Computer Science"

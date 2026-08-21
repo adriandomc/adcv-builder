@@ -11,7 +11,7 @@
   export let resume: Resume;
 </script>
 
-<PagePreview label={`${resume.profile.name} resume`}>
+<PagePreview label={`${resume.profile.name} resume`} fontSize={resume.settings?.fontSize ?? 9.5}>
   <Header profile={resume.profile} />
 
   <ResumeSection title="Summary">

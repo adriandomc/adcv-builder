@@ -24,7 +24,8 @@ export interface ExperienceItem {
   role: string;
   period: string;
   location: string;
-  bullets: string[];
+  description?: string;
+  bullets?: string[];
 }
 
 export interface ProjectItem {
@@ -32,7 +33,7 @@ export interface ProjectItem {
   description: string;
   url: string;
   stack: string[];
-  bullets: string[];
+  bullets?: string[];
 }
 
 export interface EducationItem {
@@ -41,8 +42,13 @@ export interface EducationItem {
   period: string;
 }
 
+export interface ResumeSettings {
+  fontSize?: number;
+}
+
 export interface Resume {
   document?: 'resume';
+  settings?: ResumeSettings;
   profile: ResumeProfile;
   summary: string;
   skills: SkillGroup[];
@@ -99,7 +105,8 @@ export const ExperienceItemSchema = Schema.Struct({
   role: Schema.String,
   period: Schema.String,
   location: Schema.String,
-  bullets: Schema.Array(Schema.String)
+  description: Schema.optional(Schema.String),
+  bullets: Schema.optional(Schema.Array(Schema.String))
 });
 
 export const ProjectItemSchema = Schema.Struct({
@@ -107,7 +114,7 @@ export const ProjectItemSchema = Schema.Struct({
   description: Schema.String,
   url: Schema.String,
   stack: Schema.Array(Schema.String),
-  bullets: Schema.Array(Schema.String)
+  bullets: Schema.optional(Schema.Array(Schema.String))
 });
 
 export const EducationItemSchema = Schema.Struct({
@@ -116,8 +123,13 @@ export const EducationItemSchema = Schema.Struct({
   period: Schema.String
 });
 
+export const ResumeSettingsSchema = Schema.Struct({
+  fontSize: Schema.optional(Schema.Number.pipe(Schema.between(7, 12)))
+});
+
 export const ResumeSchema = Schema.Struct({
   document: Schema.optional(Schema.Literal('resume')),
+  settings: Schema.optional(ResumeSettingsSchema),
   profile: ResumeProfileSchema,
   summary: Schema.String,
   skills: Schema.Array(SkillGroupSchema),

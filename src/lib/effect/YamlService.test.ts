@@ -22,6 +22,9 @@ describe('YamlService', () => {
         }
       ]);
       expect(result.value.skills[0]?.items).toContain('React');
+      expect(result.value.settings?.fontSize).toBe(9.5);
+      expect(result.value.experience[1]?.description).toContain('Delivered client projects');
+      expect(result.value.experience[1]?.bullets).toBeUndefined();
     }
   });
 
@@ -42,6 +45,12 @@ describe('YamlService', () => {
     ) {
       expect(result.value.profile.website).toBe('https://portfolio.example.com');
     }
+  });
+
+  it('rejects resume font sizes outside the supported range', async () => {
+    const result = await parseYamlToAstResult(DEFAULT_RESUME_YAML.replace('fontSize: 9.5', 'fontSize: 13'));
+
+    expect(result.ok).toBe(false);
   });
 
   it('parses a short resume with free text', async () => {

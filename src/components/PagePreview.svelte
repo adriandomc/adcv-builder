@@ -3,6 +3,7 @@
   import { hasPageOverflow, PAGE_HEIGHT_PX, PAGE_WIDTH_PX } from '$lib/resume/page';
 
   export let label: string;
+  export let fontSize = 9.5;
 
   const FRAME_PAD = 32;
   const FRAME_PAD_MOBILE = 12;
@@ -54,7 +55,7 @@
     <article
       class="resume-document"
       aria-label={label}
-      style="--resume-page-width: {PAGE_WIDTH_PX}px; --resume-page-height: {PAGE_HEIGHT_PX}px; transform: scale({scale}); transform-origin: top left;"
+      style="--resume-page-width: {PAGE_WIDTH_PX}px; --resume-page-height: {PAGE_HEIGHT_PX}px; font-size: {fontSize}pt; transform: scale({scale}); transform-origin: top left;"
       bind:this={documentEl}
     >
       <slot />

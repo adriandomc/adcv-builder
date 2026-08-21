@@ -2,6 +2,8 @@
   import type { ExperienceItem } from '$lib/effect/ResumeSchema';
 
   export let item: ExperienceItem;
+
+  $: bullets = item.bullets ?? [];
 </script>
 
 <article class="resume-item">
@@ -13,9 +15,13 @@
     <p class="resume-item__meta">{item.period}</p>
   </div>
 
-  {#if item.bullets.length}
+  {#if item.description}
+    <p class="resume-description">{item.description}</p>
+  {/if}
+
+  {#if bullets.length}
     <ul class="resume-bullets">
-      {#each item.bullets as bullet}
+      {#each bullets as bullet}
         <li>{bullet}</li>
       {/each}
     </ul>
