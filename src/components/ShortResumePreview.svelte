@@ -35,16 +35,8 @@
 </div>
 
 <style>
-  .short-resume-document {
-    display: flex;
-    flex-direction: column;
-  }
-
   .short-resume-body {
-    display: grid;
-    flex: 1;
-    place-items: center;
-    padding: var(--adc-space-7) 0;
+    padding-top: var(--adc-space-6);
   }
 
   .short-resume-body p {
@@ -57,7 +49,7 @@
 
   @media print {
     .short-resume-body {
-      padding: 0.25in 0;
+      padding-top: 0.1in;
     }
 
     .short-resume-body p {
